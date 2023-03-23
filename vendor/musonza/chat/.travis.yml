@@ -2,12 +2,10 @@ language: php
 
 matrix:
   include:
-    - php: 7.2
-      env: ILLUMINATE_VERSION=6.0
-    - php: 7.2
-      env: ILLUMINATE_VERSION=6.*
+    - php: 7.3
+      env: ILLUMINATE_VERSION=8.*
 php:
-  - 7.2
+  - 7.3
 
 sudo: false
 
