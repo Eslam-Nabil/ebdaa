@@ -1,0 +1,17 @@
+.required {
+    color: red;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.heading-elements {
+    float: right;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.red {
+    color: red;
+}

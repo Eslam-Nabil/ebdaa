@@ -1,0 +1,15 @@
+.cancelForm span {
+    display: none;
+}
+
+.cancelForm:after {
+    content: attr(data-cancel);
+}
+
+.profilePicture {
+    width: 100%;
+}
+
+.profileContainer input {
+    width: 100%;
+}
