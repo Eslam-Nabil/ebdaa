@@ -84,6 +84,18 @@
                 </ul>
             </li>
             @endif
+            <li>
+                <a href="#"><i class="fa fa-bus fa-fw"></i>bond<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('portal.bond.index') }}">Browse bonds</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('portal.bond.create') }}">create bond</a>
+                    </li>
+                </ul>
+            </li>
+
         </ul>
     </div>
 </div>

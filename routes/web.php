@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
 
 Route::permanentRedirect('/', 'portal/applications');
 
@@ -171,19 +172,6 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
             ->name('portal.courseTitle.delete');
     });
 
-    Route::group(['prefix' => 'finance'], function () {
-        Route::get('/', 'Portal\FinanceController@index')
-            ->name('portal.finance.index');
-        Route::get('list', 'Portal\FinanceController@list')
-            ->name('portal.finance.list');
-        Route::get('create', 'Portal\FinanceController@create')
-            ->name('portal.finance.create');
-        Route::post('/', 'Portal\FinanceController@store')
-            ->name('portal.finance.store');
-        Route::get('/{id}/delete', 'Portal\FinanceController@delete')
-            ->name('portal.finance.delete');
-    });
-
     Route::group(['prefix' => 'marketing/summary'], function () {
         Route::get('/{startDate?}', 'Portal\MarketingSummaryController@monthly')
             ->name('portal.marketingSummary.monthly');
@@ -275,6 +263,37 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
         Route::get('journeys', 'Portal\BusController@Journeys')
             ->name('portal.bus.journeys');
     });
+});
+
+Route::group(['prefix' => 'finance'], function () {
+    Route::get('/', 'Portal\FinanceController@index')
+        ->name('portal.finance.index');
+    Route::get('list', 'Portal\FinanceController@list')
+        ->name('portal.finance.list');
+    Route::get('create', 'Portal\FinanceController@create')
+        ->name('portal.finance.create');
+    Route::post('/', 'Portal\FinanceController@store')
+        ->name('portal.finance.store');
+    Route::get('/{id}/delete', 'Portal\FinanceController@delete')
+        ->name('portal.finance.delete');
+});
+    
+Route::group(['prefix' => 'Bond'], function () {
+    Route::get('/', 'Bond\BondController@index')
+        ->name('portal.bond.index');
+
+    Route::get('{id}/view', 'Bond\BondController@view')
+        ->name('portal.bond.view');
+
+    // Route::get('list', 'Bond\BondController@list')
+    //     ->name('portal.bond.list');
+
+    Route::get('create', 'Bond\BondController@create')
+        ->name('portal.bond.create');
+    // Route::post('/', 'Bond\BondController@store')
+    //     ->name('portal.bond.store');
+    // Route::get('/{id}/delete', 'Bond\BondController@delete')
+    //     ->name('portal.bond.delete');
 });
 
 Auth::routes();
