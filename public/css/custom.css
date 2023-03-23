@@ -1,0 +1,7 @@
+.cancelForm span {
+    display: none;
+}
+
+.cancelForm:after {
+    content: attr(data-cancel);
+}
