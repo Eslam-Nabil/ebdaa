@@ -23,35 +23,47 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
     Route::get('users/token', 'Portal\UsersController@generateToken')->name('portal.users.token');
 
     Route::get(
-        'users/insert', 'Portal\UsersController@insert'
+        'users/insert',
+        'Portal\UsersController@insert'
     )->name('portal.users.insert');
 
     Route::post(
-        'users/create', 'Portal\UsersController@create'
+        'users/create',
+        'Portal\UsersController@create'
     )->name('portal.users.create');
 
     Route::get(
-        'users/browse', 'Portal\UsersController@browse'
+        'users/browse',
+        'Portal\UsersController@browse'
     )->name('portal.users.browse');
 
     Route::get(
-        'users/list', 'Portal\UsersController@list')
-    ->name('portal.users.list');
+        'users/list',
+        'Portal\UsersController@list'
+    )
+        ->name('portal.users.list');
 
     Route::get(
-        'user/{userId}', 'Portal\UsersController@edit')
-    ->name('portal.users.edit');
+        'user/{userId}',
+        'Portal\UsersController@edit'
+    )
+        ->name('portal.users.edit');
 
     Route::get(
-        'user/{userId}/delete', 'Portal\UsersController@delete')
-    ->name('portal.users.delete');
+        'user/{userId}/delete',
+        'Portal\UsersController@delete'
+    )
+        ->name('portal.users.delete');
 
     Route::post(
-        'user/{userId}', 'Portal\UsersController@update')
-    ->name('portal.users.update');
+        'user/{userId}',
+        'Portal\UsersController@update'
+    )
+        ->name('portal.users.update');
 
     Route::resource(
-        'applications', 'Portal\ApplicationController'
+        'applications',
+        'Portal\ApplicationController'
     )->except(['destroy']);
     Route::post(
         'application/lookup',
@@ -180,7 +192,7 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'courses'], function () {
         Route::get('/', 'Portal\CoursesController@index')
             ->name('portal.courses.index');
-        
+
         Route::get('/grid/{startDate?}', 'Portal\CoursesController@grid')
             ->name('portal.courses.grid');
 
@@ -189,22 +201,22 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
 
         Route::get('list', 'Portal\CoursesController@list')
             ->name('portal.courses.list');
-        
+
         Route::get('create', 'Portal\CoursesController@create')
             ->name('portal.courses.create');
-        
+
         Route::post('/', 'Portal\CoursesController@store')
             ->name('portal.courses.store');
-        
+
         Route::get('/{id}', 'Portal\CoursesController@show')
             ->name('portal.courses.show');
-        
+
         Route::get('/{id}/edit', 'Portal\CoursesController@edit')
             ->name('portal.courses.edit');
-        
+
         Route::post('/{id}', 'Portal\CoursesController@update')
             ->name('portal.courses.update');
-        
+
         Route::get('/{id}/delete', 'Portal\CoursesController@delete')
             ->name('portal.courses.delete');
 
@@ -221,8 +233,10 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
     });
 
     Route::get(
-        'common/notifications', 'Portal\CommonController@notifications')
-    ->name('portal.notifications');
+        'common/notifications',
+        'Portal\CommonController@notifications'
+    )
+        ->name('portal.notifications');
 
     Route::get('parents/createtoken', 'Portal\ParentsController@createTokenByStudent')->name('portal.parents.createtoken');
 
@@ -253,13 +267,13 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
 
         Route::post('addstudent', 'Portal\BusController@AddStudentToBus')
             ->name('portal.bus.addstudent');
-        
+
         Route::post('removestudent', 'Portal\BusController@RemoveStudent')
             ->name('portal.bus.removestudent');
 
         Route::get('journey', 'Portal\BusController@getJourneys')
             ->name('portal.bus.journey');
-        
+
         Route::get('journeys', 'Portal\BusController@Journeys')
             ->name('portal.bus.journeys');
     });
@@ -277,7 +291,7 @@ Route::group(['prefix' => 'finance'], function () {
     Route::get('/{id}/delete', 'Portal\FinanceController@delete')
         ->name('portal.finance.delete');
 });
-    
+
 Route::group(['prefix' => 'Bond'], function () {
     Route::get('/', 'Bond\BondController@index')
         ->name('portal.bond.index');
@@ -285,13 +299,13 @@ Route::group(['prefix' => 'Bond'], function () {
     Route::get('{id}/view', 'Bond\BondController@view')
         ->name('portal.bond.view');
 
+    Route::post('/', 'Bond\BondController@store')
+        ->name('portal.bond.store');
     // Route::get('list', 'Bond\BondController@list')
     //     ->name('portal.bond.list');
 
     Route::get('create', 'Bond\BondController@create')
         ->name('portal.bond.create');
-    // Route::post('/', 'Bond\BondController@store')
-    //     ->name('portal.bond.store');
     // Route::get('/{id}/delete', 'Bond\BondController@delete')
     //     ->name('portal.bond.delete');
 });
