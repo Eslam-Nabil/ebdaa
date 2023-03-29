@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Bond;
+namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bond;

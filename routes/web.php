@@ -293,21 +293,25 @@ Route::group(['prefix' => 'finance'], function () {
 });
 
 Route::group(['prefix' => 'Bond'], function () {
-    Route::get('/', 'Bond\BondController@index')
+    Route::get('/', 'Finance\BondController@index')
         ->name('portal.bond.index');
-
-    Route::get('{id}/view', 'Bond\BondController@view')
+    Route::get('view/{id}', 'Finance\BondController@view')
         ->name('portal.bond.view');
-
-    Route::post('/', 'Bond\BondController@store')
+    Route::post('/store', 'Finance\BondController@store')
         ->name('portal.bond.store');
-    // Route::get('list', 'Bond\BondController@list')
-    //     ->name('portal.bond.list');
-
-    Route::get('create', 'Bond\BondController@create')
+    Route::get('create', 'Finance\BondController@create')
         ->name('portal.bond.create');
-    // Route::get('/{id}/delete', 'Bond\BondController@delete')
-    //     ->name('portal.bond.delete');
+});
+
+Route::group(['prefix' => 'invoice'], function () {
+    Route::get('/', 'Finance\InvoiceController@index')
+        ->name('portal.invoice.index');
+    Route::get('view/{id}', 'Finance\InvoiceController@view')
+        ->name('portal.invoice.view');
+    Route::post('/store', 'Finance\InvoiceController@store')
+        ->name('portal.invoice.store');
+    Route::get('create', 'Finance\InvoiceController@create')
+        ->name('portal.invoice.create');
 });
 
 Auth::routes();

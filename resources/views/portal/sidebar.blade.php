@@ -95,6 +95,17 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a href="#"><i class="fa fa-bus fa-fw"></i>invoice<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="{{ route('portal.invoice.index') }}">Browse invoices</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('portal.invoice.create') }}">create invoice</a>
+                    </li>
+                </ul>
+            </li>
 
         </ul>
     </div>

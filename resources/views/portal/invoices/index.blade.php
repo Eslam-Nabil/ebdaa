@@ -9,7 +9,7 @@
 @section('scripts')
 <script type="text/javascript" src="{{ asset('js/dataTables/datatables.min.js') }}"></script>
 <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
-<script src="{{ asset('js/portal/bonds.js') }}"></script>
+<script src="{{ asset('js/portal/invoices.js') }}"></script>
 
 @endsection
 
@@ -19,7 +19,7 @@
         <h1 class="page-header">Dashboard</h1>
     </div>
     <div class="col-lg-4" style="text-align: right;">
-        <a href="{{ route('portal.bond.create') }}" class="page-header btn btn-primary">Add Bond</a>
+        <a href="{{ route('portal.invoice.create') }}" class="page-header btn btn-primary">Add Invoice</a>
     </div>
 
     @include('portal/breadcrumbs')
@@ -31,13 +31,13 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                List all Bonds
+                List all Invoices
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="dataTable_wrapper"
 
-                     data-source="{{ route('portal.bond.index') }}"
+                     data-source="{{ route('portal.invoice.index') }}"
                     
                      >
                     <table id="dtList"

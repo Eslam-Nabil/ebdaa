@@ -46,15 +46,26 @@
             }
         });
 
-        $('.select2').select2({
-            minimumResultsForSearch: -1
-        });
-        $('.invoices').select2({
+        $('.students').select2({
             minimumResultsForSearch: -1
         });
         $('.incomes').select2({
             minimumResultsForSearch: -1
         });
+
+
+        $('.incomes').on('change', function() {
+
+            if ($(this).val() == 1) {
+                $('.courses').parent().show();
+
+                $('.courses').select2({
+                    minimumResultsForSearch: -1
+                });
+            }
+
+
+        })
     </script>
 @endsection
 
@@ -85,13 +96,33 @@
                         Bond Informations
                     </div>
                     <div class="panel-body newStudentContainer">
-                       
+
                         <div class="col-md-6">
-                            <label>Income</label>
-                            <select name="income" class="form-control incomes" multiple="multiple">
+                            <label>Income Type</label>
+                            <select name="income_id" class="form-control incomes" required>
                                 @foreach ($incomes as $income)
-                                    <option {{-- {{ old('income') && in_array($coach['id'], old('income')) ? 'selected' : '' }} --}} {{-- old('income.' . $k) == $coach['id'] ? 'selected' : '' --}} value="{{ $income->id }}">
+                                    <option value="{{ $income->id }}" {{-- {{ old('income') && in_array($coach['id'], old('income')) ? 'selected' : '' }} --}} {{-- old('income.' . $k) == $coach['id'] ? 'selected' : '' --}}>
                                         {{ $income->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Student</label>
+                            <select name="student_id" class="form-control students" required>
+                                @foreach ($students as $student)
+                                    <option value="{{ $student->id }}" {{-- {{ old('student') && in_array($coach['id'], old('student')) ? 'selected' : '' }} --}} {{-- old('student.' . $k) == $coach['id'] ? 'selected' : '' --}}>
+                                        {{ $student->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6" style="display: none">
+                            <label>Courses</label>
+                            <select name="course_id" class="form-control courses" required>
+                                @foreach ($courses as $course)
+                                    <option value="{{ $course->id }}" {{-- {{ old('course') && in_array($coach['id'], old('course')) ? 'selected' : '' }} --}} {{-- old('course.' . $k) == $coach['id'] ? 'selected' : '' --}}>
+                                        {{ $course->title->title }}
                                     </option>
                                 @endforeach
                             </select>
@@ -99,14 +130,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Total</label> <span class="required">*</span>
-                                <input class="form-control" value="{{ old('total') }}" name="total">
-                                <!-- <p class="help-block">Example block-level help text here.</p> -->
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>User</label> <span class="required">*</span>
-                                <input class="form-control" value="{{ old('user') }}" name="user">
+                                <input class="form-control" value="{{ old('total') }}" name="total" required>
                                 <!-- <p class="help-block">Example block-level help text here.</p> -->
                             </div>
                         </div>
