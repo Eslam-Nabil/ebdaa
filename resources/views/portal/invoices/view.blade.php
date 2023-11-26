@@ -42,7 +42,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 Invoice Info
-                <a href="{{ route('portal.bond.create', $invoice->id ) }}" class="btn btn-primary">Add Bon</a>
+                <a href="{{ route('portal.bond.create', $invoice->id ) }}" class="btn btn-primary">Add Bond</a>
                 {{-- <div class="col-lg-4" style="text-align: right;">
                 </div> --}}
             </div> 

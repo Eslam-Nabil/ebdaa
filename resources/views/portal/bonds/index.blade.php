@@ -154,9 +154,9 @@
                             render: function(data) {
                                 if (data.acceptedBy == 'Not accepted yet')
                                     return renderAcceptButton(data.id) + "  " + renderPrintButton(
-                                        data);
+                                        data.id);
                                 else
-                                    return renderAcceptedButton() + "  " + renderPrintButton(data);
+                                    return renderAcceptedButton() + "  " + renderPrintButton(data.id);
                             }
 
                         }
