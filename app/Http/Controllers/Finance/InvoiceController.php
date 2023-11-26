@@ -80,7 +80,6 @@ class InvoiceController extends Controller
   public function printInvoice($invoiceId)
   {
       $invoice = Invoice::findOrFail($invoiceId);
-      // dd($invoice);
       $pdf = Pdf::loadView('portal/invoices/invoice-pdf', ['invoice'=>$invoice]);
       return $pdf->stream(); // Output the generated PDF to the browser
   }
