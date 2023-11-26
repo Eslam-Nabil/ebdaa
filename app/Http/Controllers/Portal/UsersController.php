@@ -47,10 +47,10 @@ class UsersController extends Controller
         }
 
         $userGroups = UserGroup::all();
-        $courses    = CourseTitle::select(['id', 'title'])->get();
+        $courses = CourseTitle::select(['id', 'title'])->get();
 
         return view('portal/users/insert', [
-            'groups'  => $userGroups,
+            'groups' => $userGroups,
             'courses' => $courses
         ]);
     }
@@ -69,8 +69,8 @@ class UsersController extends Controller
             'password' => 'required|min:1|regex:#^[a-z\!\$\#\%0-9\_\-]+$#',
             'name' => 'required|min:5'
         ], [
-            'regex' => 'Password MUST contains characters, special character and numbers'
-        ]);
+                'regex' => 'Password MUST contains characters, special character and numbers'
+            ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator);
@@ -83,8 +83,8 @@ class UsersController extends Controller
         $user->name = $credentials['name'];
         $user->group_id = $credentials['group'];
         if ($user->save()) {
-            if ($user->group_id ==  4)
-                $user->courses()->sync( $credentials['course']);
+            if ($user->group_id == 4)
+                $user->courses()->sync($credentials['course']);
             return redirect()->route('portal.users.edit', $user->id);
         }
 
@@ -102,21 +102,21 @@ class UsersController extends Controller
         $user = User::find($userId);
 
         $userGroups = UserGroup::all();
-        $courses    = CourseTitle::select(['id', 'title'])->get();
-//        $selectedCourses    = $user->courses->toArray();
+        $courses = CourseTitle::select(['id', 'title'])->get();
+        //        $selectedCourses    = $user->courses->toArray();
         $selectedCourses = array_column(
             $user->courses->toArray(),
             'id'
         );
 
         return view('portal/users/edit', [
-            'userData'         => $user,
-            'groups'           => $userGroups,
-            'courses'          => $courses,
+            'userData' => $user,
+            'groups' => $userGroups,
+            'courses' => $courses,
             'selectedCourses' => $selectedCourses,
-            'crumbs'   => [
-                    ['text' => 'Admin', 'href' => 'portal.home'],
-                    ['text' => 'Users', 'href' => 'portal.users.browse']
+            'crumbs' => [
+                ['text' => 'Admin', 'href' => 'portal.home'],
+                ['text' => 'Users', 'href' => 'portal.users.browse']
             ]
         ]);
     }
@@ -159,10 +159,10 @@ class UsersController extends Controller
         }
         $user->name = $credentials['name'];
         $user->group_id = $credentials['group'];
-//        $user->course_id = $credentials['course'];
+        //        $user->course_id = $credentials['course'];
         if ($user->save()) {
-            if ($user->group_id ==  4)
-                $user->courses()->sync( $credentials['course']);
+            if ($user->group_id == 4)
+                $user->courses()->sync($credentials['course']);
 
             return redirect()->route('portal.users.edit', $userId);
         }
@@ -202,7 +202,7 @@ class UsersController extends Controller
 
     public function generateToken(Request $request)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             response()->json(['error' => 'Unauthenticated'], 401);
         }
 
@@ -219,5 +219,13 @@ class UsersController extends Controller
         $id = $credentials['id'];
         User::find($id)->generateToken();
         return back()->withInput();
+    }
+    public function profile()
+    {
+        $user = Auth::user();
+        $wallet = $user->wallet;
+        $total_in = $wallet->where('type', 'in')->sum('amount');
+        $total_out = $wallet->where('type', 'out')->sum('amount');
+        return view('portal/users/view', compact('total_in', 'total_out', 'wallet'));
     }
 }

@@ -18,7 +18,11 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/portal/applications');
+            if (Auth::user()->group_id == 5) {
+                return redirect('/Bond');
+            } else {
+                return redirect('/portal/applications');
+            }
         }
 
         return $next($request);

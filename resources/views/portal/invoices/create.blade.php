@@ -32,40 +32,9 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-        $('.removeRelative').click(function() {
-            $(this).parent().parent().remove();
-            if ($('#relatives').find('tbody tr').length == 1) {
-                $('.removeRelative').addClass('disabled');
-            }
+        $('select').select2({
+            minimumResultsForSearch: 10
         });
-        $('.removeMembership').click(function() {
-            $(this).parent().parent().remove();
-            if ($('#memberships').find('tbody tr').length == 1) {
-                $('.removeMembership').addClass('disabled');
-            }
-        });
-
-        $('.students').select2({
-            minimumResultsForSearch: -1
-        });
-        $('.incomes').select2({
-            minimumResultsForSearch: -1
-        });
-
-
-        $('.incomes').on('change', function() {
-
-            if ($(this).val() == 1) {
-                $('.courses').parent().show();
-
-                $('.courses').select2({
-                    minimumResultsForSearch: -1
-                });
-            }
-
-
-        })
     </script>
 @endsection
 
@@ -93,10 +62,9 @@
                 {{ csrf_field() }}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Bond Informations
+                        Invoice Informations
                     </div>
                     <div class="panel-body newStudentContainer">
-
                         <div class="col-md-6">
                             <label>Income Type</label>
                             <select name="income_id" class="form-control incomes" required>
@@ -117,16 +85,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-6" style="display: none">
-                            <label>Courses</label>
-                            <select name="course_id" class="form-control courses" required>
-                                @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}" {{-- {{ old('course') && in_array($coach['id'], old('course')) ? 'selected' : '' }} --}} {{-- old('course.' . $k) == $coach['id'] ? 'selected' : '' --}}>
-                                        {{ $course->title->title }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Total</label> <span class="required">*</span>

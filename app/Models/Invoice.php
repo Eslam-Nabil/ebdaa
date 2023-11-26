@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    protected $fillable = ['income_id','course_id','total','remaining','student_id'];
+    protected $fillable = ['income_id', 'course_id', 'total', 'remaining', 'student_id'];
 
     public function bond()
     {
@@ -15,5 +15,13 @@ class Invoice extends Model
     public function income()
     {
         return $this->belongsTo(Income::class, 'income_id');
+    }
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
     }
 }

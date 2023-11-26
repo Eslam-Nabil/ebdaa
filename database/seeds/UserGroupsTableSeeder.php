@@ -11,6 +11,10 @@ class UserGroupsTableSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        DB::table('user_groups')->truncate();
+        Schema::enableForeignKeyConstraints();
+
         DB::table('user_groups')->insert([
             'name' => 'admins',
         ]);
@@ -29,6 +33,9 @@ class UserGroupsTableSeeder extends Seeder
 
         DB::table('user_groups')->insert([
             'name' => 'finance',
+        ]);
+        DB::table('user_groups')->insert([
+            'name' => 'expense',
         ]);
     }
 }

@@ -13,7 +13,6 @@ class CreateBondsTable extends Migration
      */
     public function up()
     {
-        //Schema::dropIfExists('bonds');
         Schema::create('bonds', function (Blueprint $table) {
             $table->bigIncrements('id');
 
@@ -22,18 +21,13 @@ class CreateBondsTable extends Migration
             
             $table->integer('amount');
             
-            $table->unsignedInteger('income_id');
-            $table->foreign('income_id')->references('id')->on('incomes');
-
-            $table->unsignedInteger('course_id')->nullable();
-            $table->foreign('course_id')->nullable()->references('id')->on('courses');
-           
             $table->unsignedInteger('createdBy');
             $table->foreign('createdBy')->references('id')->on('users');
 
-            $table->unsignedInteger('acceptedBy');
+            $table->unsignedInteger('acceptedBy')->nullable();
             $table->foreign('acceptedBy')->references('id')->on('users');
             $table->timestamps();
+            
         });
     }
 

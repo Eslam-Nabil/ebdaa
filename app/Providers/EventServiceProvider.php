@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\StudentsToCourse;
 use Illuminate\Support\Facades\Event;
+use App\Observers\CourseInvoiceObserver;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -25,7 +27,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        parent::boot();
+        StudentsToCourse::observe(CourseInvoiceObserver::class);
 
         //
     }

@@ -20,6 +20,7 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
     // Route::get('/', 'Portal\CommonController@index')->name('portal.home');
     Route::get('users/browse', 'Portal\UsersController@browse')->name('portal.users.browse');
     Route::get('users', 'Portal\UsersController@index');
+    Route::get('user/profile', 'Portal\UsersController@profile')->name('portal.user.profile');
     Route::get('users/token', 'Portal\UsersController@generateToken')->name('portal.users.token');
 
     Route::get(
@@ -291,27 +292,58 @@ Route::group(['prefix' => 'finance'], function () {
     Route::get('/{id}/delete', 'Portal\FinanceController@delete')
         ->name('portal.finance.delete');
 });
+Route::group(['prefix' => 'profile'], function () {
+    Route::get('/', 'Portal\UserController@profile')
+        ->name('portal.profile.index');
+});
 
 Route::group(['prefix' => 'Bond'], function () {
     Route::get('/', 'Finance\BondController@index')
         ->name('portal.bond.index');
-    Route::get('view/{id}', 'Finance\BondController@view')
-        ->name('portal.bond.view');
+    Route::get('/list', 'Finance\BondController@list')
+        ->name('portal.bond.list');
+    Route::get('/accept/{id}', 'Finance\BondController@accept')
+        ->name('portal.bond.accept');
     Route::post('/store', 'Finance\BondController@store')
         ->name('portal.bond.store');
-    Route::get('create', 'Finance\BondController@create')
+    Route::get('create/{id?}', 'Finance\BondController@create')
         ->name('portal.bond.create');
+        Route::get('print/{id}', 'Finance\BondController@printBond')
+        ->name('portal.bond.print');
+});
+
+Route::group(['prefix' => 'Expense-request'], function () {
+    Route::get('/', 'Finance\ExpenseRequestController@index')
+        ->name('portal.request.index');
+        Route::get('/list', 'Finance\ExpenseRequestController@list')
+        ->name('portal.request.list');
+        Route::get('/accept/{id}', 'Finance\ExpenseRequestController@accept')
+        ->name('portal.request.accept');
+        Route::post('/store', 'Finance\ExpenseRequestController@store')
+        ->name('portal.request.store');
+        Route::get('create', 'Finance\ExpenseRequestController@create')
+        ->name('portal.request.create');
+        Route::get('/expense-wallet', 'Finance\WalletController@expense_wallet')
+        ->name('portal.request.expense.index');
+        Route::get('/expense-wallet/list', 'Finance\WalletController@expense_wallet_list')
+        ->name('portal.request.expense.list');
 });
 
 Route::group(['prefix' => 'invoice'], function () {
     Route::get('/', 'Finance\InvoiceController@index')
         ->name('portal.invoice.index');
+    Route::get('/list', 'Finance\InvoiceController@list')
+        ->name('portal.invoice.list');
     Route::get('view/{id}', 'Finance\InvoiceController@view')
         ->name('portal.invoice.view');
+    Route::get('view_json/{id}', 'Finance\InvoiceController@view_json')
+        ->name('portal.invoice.view_json');
     Route::post('/store', 'Finance\InvoiceController@store')
         ->name('portal.invoice.store');
     Route::get('create', 'Finance\InvoiceController@create')
         ->name('portal.invoice.create');
+    Route::get('print/{id}', 'Finance\InvoiceController@printInvoice')
+        ->name('portal.invoice.print');
 });
 
 Auth::routes();
