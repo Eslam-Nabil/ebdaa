@@ -12,12 +12,15 @@ use App\Models\StudentsToCourse;
 class StudentToCourseController extends Controller
 {
     public function store(Request $request)
-    {
+    {  
         $credentials = $request->only(['participant', 'course_id']);
-
         $validator = Validator::make($credentials['participant'], [
             'application_id' => 'required',
             'paid' => 'required',
+            'discount'=>'numeric|lte:' . $request->participant['total']
+        ],
+        [
+            'lte'=>'Discount must be smaller than ' .$request->participant['total']    
         ]);
 
         if ($validator->fails()) {
@@ -28,23 +31,22 @@ class StudentToCourseController extends Controller
         }
 
         $userId = Auth::id();
-
         $participant = $credentials['participant'];
-
         $studentToCourse = new StudentsToCourse;
         $studentToCourse->course_id = $credentials['course_id'];
         $studentToCourse->application_id = $participant['application_id'];
         $studentToCourse->paid = $participant['paid'];
-        $studentToCourse->paid_1 = $participant['paid_1'];
-        $studentToCourse->paid_2 = $participant['paid_2'];
-        $studentToCourse->paid_3 = $participant['paid_3'];
-        $studentToCourse->paid_4 = $participant['paid_4'];
-        $studentToCourse->paid_5 = $participant['paid_5'];
-        $studentToCourse->invoice = $participant['invoice'] ?: '';
+        $studentToCourse->total = ($participant['discount'] ? $participant['total'] -$participant['discount']:$participant['total']) ;
+        $studentToCourse->paid_1 = $participant['paid_1']?: 0;
+        $studentToCourse->paid_2 = $participant['paid_2']?: 0;
+        $studentToCourse->paid_3 = $participant['paid_3']?: 0;
+        $studentToCourse->paid_4 = $participant['paid_4']?: 0;
+        $studentToCourse->paid_5 = $participant['paid_5']?: 0;
+        // $studentToCourse->invoice = $participant['invoice'] ?: '';
         $studentToCourse->discount = $participant['discount'] ?: '';
         $studentToCourse->get_books = $participant['get_books'] ?: 0;
         $studentToCourse->user_id = $userId;
-
+        
         if ($studentToCourse->save()) {
             $studentToCourse = StudentsToCourse::with(['application' => function ($q) {
                 $q->with(['student' => function ($q) {
@@ -86,7 +88,7 @@ class StudentToCourseController extends Controller
         $participant = $credentials['participant'];
 
         $studentToCourse = StudentsToCourse::find($credentials['participant_id']);
-        $studentToCourse->paid = $participant['paid'];
+        // $studentToCourse->paid = $participant['paid'];
         $studentToCourse->paid_1 = isset($participant['paid_1']) ? $participant['paid_1'] : 0;
         $studentToCourse->paid_2 = isset($participant['paid_2']) ? $participant['paid_2'] : 0;
         $studentToCourse->paid_3 = isset($participant['paid_3']) ? $participant['paid_3'] : 0;

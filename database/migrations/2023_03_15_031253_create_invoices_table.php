@@ -13,15 +13,21 @@ class CreateInvoicesTable extends Migration
      */
     public function up()
     {
+     //   Schema::dropIfExists('invoices');
         Schema::create('invoices', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('income_id');
+            $table->increments('id');
+
+            $table->unsignedInteger('income_id');
             $table->foreign('income_id')->references('id')->on('incomes');
-            $table->integer('course_id')->nullable();
+
+            $table->unsignedInteger('course_id')->nullable();
             $table->foreign('course_id')->references('id')->on('courses');
+
+            $table->unsignedInteger('student_id')->nullable();
+            $table->foreign('student_id')->references('id')->on('students');
+
             $table->string('total');
             $table->string('remaining')->nullable();
-            $table->string('user')->nullable();
             $table->timestamps();
         });
     }

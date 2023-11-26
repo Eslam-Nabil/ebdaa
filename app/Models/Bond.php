@@ -6,23 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bond extends Model
 {
-    protected $fillable = ['invoice_id','amount','income_id','user','createdBy','acceptedBy'];
+    protected $fillable = ['invoice_id', 'amount', 'createdBy', 'acceptedBy'];
 
-    public function incomeType()
-    {
-        return $this->belongsTo(Income::class, 'income_id');
-    }
     public function invoice()
     {
         return $this->belongsTo(Invoice::class, 'invoice_id');
     }
-    public function createdBy()
+    public function created_by()
     {
-        return $this->belongsTo(User::class, 'createdBy');
+        return $this->belongsTo('App\User', 'createdBy');
     }
-    public function acceptedBy()
+    public function accepted_by()
     {
-        return $this->belongsTo(User::class, 'acceptedBy');
+        return $this->belongsTo('App\User', 'acceptedBy');
     }
 
 }

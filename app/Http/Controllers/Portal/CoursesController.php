@@ -67,12 +67,12 @@ class CoursesController extends Controller
                     'title',
                     'times',
                     'coaches' => function ($q) use ($groupId, $userId) {
-                        $q->with(['coach']);
-                    }
-                ]);/*->whereBetween('start_date', [
-                    $startDate . '-01',
-                    $startDate . '-' . $daysInMonth
-                ])->orWhere('end_date', '<=', $startDate . '-' . $daysInMonth);*/
+                            $q->with(['coach']);
+                        }
+                ]); /*->whereBetween('start_date', [
+                 $startDate . '-01',
+                 $startDate . '-' . $daysInMonth
+                 ])->orWhere('end_date', '<=', $startDate . '-' . $daysInMonth);*/
             }
         ])->whereHas('course.coaches', function ($q) use ($userId, $groupId) {
             if ($groupId == 4) {
@@ -85,12 +85,11 @@ class CoursesController extends Controller
                     $startDate . '-' . $daysInMonth
                 ])->orWhere('end_date', '<=', $startDate . '-' . $daysInMonth);
             });
-        })/*->orderByRaw('STR_TO_DATE(start_time, "%h:%i %p") ASC')*/->get()->toArray();
+        }) /*->orderByRaw('STR_TO_DATE(start_time, "%h:%i %p") ASC')*/->get()->toArray();
 
         /*dd($courseTimes);
-
         $courseTimes = array_filter($courseTimes, function ($v) {
-            return $v['course'] != null;
+        return $v['course'] != null;
         });*/
 
         // echo '<pre>';print_r($courseTimes);exit;
@@ -118,11 +117,11 @@ class CoursesController extends Controller
                             }
                         }
                     }
-                }/* else {
-                    $times[$courseTime['course']['lab']] = null;
-                }*/
+                } /* else {
+                 $times[$courseTime['course']['lab']] = null;
+                 }*/
 
-		if (isset($times[$courseTime['course']['lab']])) {
+                if (isset($times[$courseTime['course']['lab']])) {
                     usort($times[$courseTime['course']['lab']], function ($a, $b) {
                         return strtotime($a['start_time']) > strtotime($b['start_time']);
                     });
@@ -141,22 +140,22 @@ class CoursesController extends Controller
         // dd($courseTimes, $daysInMonth);
 
         /*$studentsToCoursesSummary = StudentsToCourse::with([
-            'application' => function ($q) {
-                $q->with(['owner']);
-            },
-            'owner'
-            ])
-            ->whereHas('application', function ($q) use ($startDate, $groupId, $userId) {
-                $date = explode('-', $startDate);
-                $q->whereYear('created_at', $date[0])
-                ->whereMonth('created_at', $date[1])
-                ->whereHas('owner', function ($qq) use ($groupId, $userId) {
-                    $qq->where('group_id', 3);
-                    if ($groupId == 3) {
-                        $qq->where('id', $userId);
-                    }
-                });
-            })
+        'application' => function ($q) {
+        $q->with(['owner']);
+        },
+        'owner'
+        ])
+        ->whereHas('application', function ($q) use ($startDate, $groupId, $userId) {
+        $date = explode('-', $startDate);
+        $q->whereYear('created_at', $date[0])
+        ->whereMonth('created_at', $date[1])
+        ->whereHas('owner', function ($qq) use ($groupId, $userId) {
+        $qq->where('group_id', 3);
+        if ($groupId == 3) {
+        $qq->where('id', $userId);
+        }
+        });
+        })
         ->get();*/
         $studentsToCoursesSummary = StudentsToCourse::with([
             'application' => function ($q) {
@@ -166,21 +165,21 @@ class CoursesController extends Controller
             },
             'owner',
             'course'
-            ])->whereHas('course', function($course){
-                $course->where('tournament', 0);
-            })
+        ])->whereHas('course', function ($course) {
+            $course->where('tournament', 0);
+        })
             ->where(function ($q) use ($startDate) {
                 $date = explode('-', $startDate);
                 $q->whereYear('created_at', $date[0])
-                ->whereMonth('created_at', $date[1]);                
+                    ->whereMonth('created_at', $date[1]);
             })
             ->whereHas('owner', function ($qq) use ($groupId, $userId) {
                 $qq->where('group_id', 3);
                 if ($groupId == 3) {
                     $qq->where('id', $userId);
                 }
-            })            
-        ->get();
+            })
+            ->get();
 
         // dd($studentsToCoursesSummary->toArray());
 
@@ -204,7 +203,7 @@ class CoursesController extends Controller
                 'students' => count($mms['paid'])
             ];
         }
- 
+
         // dd($marketingSummary);
 
         return view('portal/courses/grid', [
@@ -253,7 +252,7 @@ class CoursesController extends Controller
 
         $endDate = $today;
         if (is_null($course['end_date']) == false) {
-            if (1==1 || strtotime($today) > strtotime($course['end_date'])) {
+            if (1 == 1 || strtotime($today) > strtotime($course['end_date'])) {
                 $endDate = $course['end_date'];
             }
         }
@@ -326,20 +325,21 @@ class CoursesController extends Controller
             $notes[$attendanceTime]['note'] = $attendanceToCource['notes'];
             $notes[$attendanceTime]['attendance_id'] = $attendanceToCource['id'];
             $notes[$attendanceTime]['attendances'] = array_column(
-                $attendanceToCource['participants'], 'application_id'
+                $attendanceToCource['participants'],
+                'application_id'
             );
         }
 
         foreach ($attendancesObj->toArray() as $attendance) {
             $appId = $attendance['application_id'];
-            
+
             $attendanceTime = strtotime($attendance['attendance']['attendance_date']);
             $attendances[$attendance['application_id']][$attendanceTime] = $attendance;
 
             /*$notes[$attendanceTime] = [
-                'note' =>$attendance['attendance']['notes'],
-                'attendance_id' => $attendance['attendance']['id'],
-                'attendances' => $attendance['attendance']['id'],
+            'note' =>$attendance['attendance']['notes'],
+            'attendance_id' => $attendance['attendance']['id'],
+            'attendances' => $attendance['attendance']['id'],
             ];*/
 
             /*$notes[$attendanceTime]['note'] = $attendance['attendance']['notes'];
@@ -377,8 +377,11 @@ class CoursesController extends Controller
         $courses = DB::table('courses')
             ->select('courses.*', 'courses_titles.title')
             ->join(
-                'courses_titles', 'courses.title_id', '=', 'courses_titles.id'
-                )
+                'courses_titles',
+                'courses.title_id',
+                '=',
+                'courses_titles.id'
+            )
             ->whereNull('deleted_at')->get();
         return response()->json(['data' => $courses]);
     }
@@ -416,14 +419,14 @@ class CoursesController extends Controller
             return redirect()->route('portal.courses.grid');
         }
 
-        $course =  Course::with('participants', 'times')->find($id);
+        $course = Course::with('participants', 'times')->find($id);
 
         $coaches = User::where('group_id', '=', 4)->get();
 
         $titles = CourseTitle::all();
 
         $participants = $course->participants;
-        
+
         $times = [];
         $start = new \DateTime('09AM');
         $end = new \DateTime('09:01PM');
@@ -458,7 +461,7 @@ class CoursesController extends Controller
         ];
 
         /*foreach ($credentials['participants'] as $key => $coache) {
-            $rules['participants.' . $key . '.application_id'] = 'required';
+        $rules['participants.' . $key . '.application_id'] = 'required';
         }*/
 
         $validator = Validator::make($credentials, $rules);
@@ -477,22 +480,19 @@ class CoursesController extends Controller
         $course->start_date = $courseData['start_date'];
         $course->end_date = $courseData['end_date'];
         $course->tournament = !empty($courseData['tournament']);
-        if (!empty($courseData['tournament']))
-        {
+        if (!empty($courseData['tournament'])) {
             $course->cost_1 = $courseData['cost_1'];
             $course->cost_2 = $courseData['cost_2'];
             $course->cost_3 = $courseData['cost_3'];
             $course->cost_4 = $courseData['cost_4'];
             $course->cost_5 = $courseData['cost_5'];
-        } 
-        else
-        {
+        } else {
             $course->cost_1 = 0;
             $course->cost_2 = 0;
             $course->cost_3 = 0;
             $course->cost_4 = 0;
             $course->cost_5 = 0;
-        }         
+        }
         $course->user_id = $userId;
 
         $course->save();
@@ -581,22 +581,39 @@ class CoursesController extends Controller
         }
 
         $coaches = User::where('group_id', '=', 4)->get();
-
         $course = Course::find($id);
-
         $selectedCoaches = array_column(
             $course->coaches->toArray(),
             'coach_id'
         );
 
+        $courseTotal =intval($course->cost); 
+        if($course->tournament != 0 ){
+            if($course->cost_1 != null){
+                $courseTotal += intval($course->cost_1);
+            }
+            if($course->cost_2 != null){
+                $courseTotal += intval($course->cost_2);
+            }
+            if($course->cost_3 != null){
+                $courseTotal += intval($course->cost_3);
+            }
+            if($course->cost_4 != null){
+                $courseTotal += intval($course->cost_4);
+            }
+            if($course->cost_5 != null){
+                $courseTotal += intval($course->cost_5);
+            }
+        }
         $titles = CourseTitle::all();
-
+        
         return view('portal/courses/edit', [
             'course' => $course,
             'coaches' => $coaches,
             'times' => $times,
             'titles' => $titles,
             'id' => $id,
+            'total'=>$courseTotal,
             'selectedCoaches' => $selectedCoaches,
         ]);
     }
@@ -632,22 +649,19 @@ class CoursesController extends Controller
         $course->start_date = $courseData['start_date'];
         $course->end_date = $courseData['end_date'];
         $course->tournament = !empty($courseData['tournament']);
-        if (!empty($courseData['tournament']))
-        {
+        if (!empty($courseData['tournament'])) {
             $course->cost_1 = $courseData['cost_1'];
             $course->cost_2 = $courseData['cost_2'];
             $course->cost_3 = $courseData['cost_3'];
             $course->cost_4 = $courseData['cost_4'];
             $course->cost_5 = $courseData['cost_5'];
-        } 
-        else
-        {
+        } else {
             $course->cost_1 = 0;
             $course->cost_2 = 0;
             $course->cost_3 = 0;
             $course->cost_4 = 0;
             $course->cost_5 = 0;
-        }    
+        }
         $course->user_id = $userId;
 
         $course->save();
@@ -724,7 +738,7 @@ class CoursesController extends Controller
 
         if (isset($term['term'])) {
             $students = Application::with([
-                'student' => function ($q) use($term) {
+                'student' => function ($q) use ($term) {
                     $q->with('father');
                 }
             ]);
@@ -733,12 +747,12 @@ class CoursesController extends Controller
                 $students->where('owner_id', $userId);
             }
 
-            $students->whereHas('student', function ($q) use($term) {
+            $students->whereHas('student', function ($q) use ($term) {
                 $q->where(
                     'name',
                     'like',
                     '%' . $term['term'] . '%'
-                )->orWhereHas('father', function ($qq) use($term) {
+                )->orWhereHas('father', function ($qq) use ($term) {
                     $qq->where(
                         DB::raw("CONCAT(students.name, ' ', parents.name)"),
                         'like',
@@ -778,13 +792,13 @@ class CoursesController extends Controller
         return response()->json(['students' => $output]);
     }
 
-    public function getCoachCourses($id){
-        $data =  CourseTitle::whereId($id)->with('coaches')->first();
+    public function getCoachCourses($id)
+    {
+        $data = CourseTitle::whereId($id)->with('coaches')->first();
 
         $output = '';
-        foreach($data->coaches as $row)
-        {
-            $output .= '<option value="'.$row->id.'">'.$row->name.'</option>';
+        foreach ($data->coaches as $row) {
+            $output .= '<option value="' . $row->id . '">' . $row->name . '</option>';
         }
         echo $output;
 

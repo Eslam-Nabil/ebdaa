@@ -13,8 +13,7 @@ class FinanceController extends Controller
 {
     public function index(Request $request)
     {
-        dd('wes is here');
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
@@ -23,7 +22,7 @@ class FinanceController extends Controller
 
     public function browse(Request $request)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
@@ -32,7 +31,7 @@ class FinanceController extends Controller
 
     public function list()
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 

@@ -19,7 +19,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -28,7 +30,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'api_token',
+        'password',
+        'remember_token',
+        'api_token',
     ];
 
     public function generateToken()
@@ -52,6 +56,10 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Bond', 'acceptedBy');
     }
+    public function wallet()
+    {
+        return $this->hasMany('App\Models\Wallet', 'user_id');
+    }
     /**
      * The courses that belong to the user.
      */
@@ -59,4 +67,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(CourseTitle::class, 'course_user', 'user_id', 'course_id');
     }
+
 }

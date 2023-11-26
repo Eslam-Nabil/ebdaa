@@ -33,7 +33,10 @@ class ApplicationController extends Controller
      */
     public function index()
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
+            if (in_array(Auth::user()->group_id, [5])) {
+                return redirect()->route('portal.bond.index');
+            }
             return redirect()->route('portal.courses.grid');
         }
 
@@ -41,18 +44,18 @@ class ApplicationController extends Controller
         $courses = CourseTitle::get()->toArray();
 
         $months = array(
-          1 => 'January', 
-          2 => 'February', 
-          3 => 'March', 
-          4 => 'April', 
-          5 => 'May', 
-          6 => 'June', 
-          7 => 'July', 
-          8 => 'August', 
-          9 => 'September', 
-          10 => 'October', 
-          11 => 'November', 
-          12 => 'December'
+            1 => 'January',
+            2 => 'February',
+            3 => 'March',
+            4 => 'April',
+            5 => 'May',
+            6 => 'June',
+            7 => 'July',
+            8 => 'August',
+            9 => 'September',
+            10 => 'October',
+            11 => 'November',
+            12 => 'December'
         );
 
         return view('portal/applications/list', [
@@ -66,8 +69,8 @@ class ApplicationController extends Controller
     {
         $groupId = Auth::user()->group_id;
         $userId = Auth::id();
-        
-        if (in_array($groupId, [1, 2 , 3]) == false) {
+
+        if (in_array($groupId, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
@@ -89,11 +92,11 @@ class ApplicationController extends Controller
                     'school',
                     'relatives',
                     's2p' => function ($q) {
-                        $q->with(['father', 'mother']);
-                    },
+                            $q->with(['father', 'mother']);
+                        },
                     'memberships' => function ($q) {
-                        $q->with(['membership']);
-                    },
+                            $q->with(['membership']);
+                        },
                 ]);
             },
             'owner',
@@ -109,22 +112,22 @@ class ApplicationController extends Controller
         }
 
         if (isset($searchFor['course_title_id']) && $searchFor['course_title_id'] != '0') {
-            $applications->whereHas('s2c', function ($query) use($searchFor) {            
-                $query->whereHas('course', function($subQuery) use($searchFor){
+            $applications->whereHas('s2c', function ($query) use ($searchFor) {
+                $query->whereHas('course', function ($subQuery) use ($searchFor) {
                     $subQuery->where('title_id', '=', $searchFor['course_title_id']);
                 });
             });
         }
 
         if (isset($searchFor['not_course_title_id']) && $searchFor['not_course_title_id'] != '0') {
-            $applications->whereDoesntHave('s2c', function ($query) use($searchFor) {            
-                $query->whereHas('course', function($subQuery) use($searchFor){
+            $applications->whereDoesntHave('s2c', function ($query) use ($searchFor) {
+                $query->whereHas('course', function ($subQuery) use ($searchFor) {
                     $subQuery->where('title_id', '=', $searchFor['not_course_title_id']);
                 });
             });
         }
 
-        $applications->whereHas('student', function ($query) use($searchFor) {
+        $applications->whereHas('student', function ($query) use ($searchFor) {
 
             if (isset($searchFor['address_1'])) {
                 $query->where('address_1', 'like', '%' . $searchFor['address_1'] . '%');
@@ -132,7 +135,7 @@ class ApplicationController extends Controller
 
             if (isset($searchFor['grade'])) {
                 $query->where('grade', 'like', '%' . $searchFor['grade'] . '%');
-            }            
+            }
 
             if (isset($searchFor['month']) && $searchFor['month'] > 0) {
                 $query->whereMonth('dob', '=', $searchFor['month']);
@@ -147,8 +150,8 @@ class ApplicationController extends Controller
             }
 
             if (isset($searchFor['mother']) && strlen($searchFor['mother']) > 0) {
-                $query->whereHas('mother', function ($qq) use($searchFor) {
-                    $qq->where('name', 'like', '%'.$searchFor['mother'].'%');
+                $query->whereHas('mother', function ($qq) use ($searchFor) {
+                    $qq->where('name', 'like', '%' . $searchFor['mother'] . '%');
                     /*$q->orWhere('job', 'like', '%'.$searchFor.'%');
                     $q->orWhere('phone_1', 'like', '%'.$searchFor.'%');
                     $q->orWhere('email', 'like', '%'.$searchFor.'%');*/
@@ -156,13 +159,13 @@ class ApplicationController extends Controller
             }
 
             if (isset($searchFor['phone']) && strlen($searchFor['phone']) > 0) {
-                $query->whereHas('father', function ($qq) use($searchFor) {
-                    $qq->where('phone_1', 'like', '%'.$searchFor['phone'].'%');
-                    $qq->orWhere('phone_2', 'like', '%'.$searchFor['phone'].'%');
+                $query->whereHas('father', function ($qq) use ($searchFor) {
+                    $qq->where('phone_1', 'like', '%' . $searchFor['phone'] . '%');
+                    $qq->orWhere('phone_2', 'like', '%' . $searchFor['phone'] . '%');
                 });
-                $query->orWhereHas('mother', function ($qq) use($searchFor) {
-                    $qq->where('phone_1', 'like', '%'.$searchFor['phone'].'%');
-                    $qq->orWhere('phone_2', 'like', '%'.$searchFor['phone'].'%');
+                $query->orWhereHas('mother', function ($qq) use ($searchFor) {
+                    $qq->where('phone_1', 'like', '%' . $searchFor['phone'] . '%');
+                    $qq->orWhere('phone_2', 'like', '%' . $searchFor['phone'] . '%');
                 });
             }
 
@@ -204,7 +207,7 @@ class ApplicationController extends Controller
      */
     public function create()
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
@@ -224,7 +227,7 @@ class ApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
@@ -364,8 +367,9 @@ class ApplicationController extends Controller
         $latestStudent = Application::where(
             'customId',
             'like',
-            $firstChar . '%')
-        ->orderBy('id', 'DESC')->first();
+            $firstChar . '%'
+        )
+            ->orderBy('id', 'DESC')->first();
 
         $customId = 0;
         if (isset($latestStudent['customId'])) {
@@ -384,8 +388,8 @@ class ApplicationController extends Controller
 
         if (
             isset($credentials['relatives']) &&
-            count($credentials['relatives']) > 0)
-        {
+            count($credentials['relatives']) > 0
+        ) {
             $relativesData = array_filter(
                 $credentials['relatives'],
                 function ($el) {
@@ -410,8 +414,8 @@ class ApplicationController extends Controller
 
         if (
             isset($credentials['memberships']) &&
-            count($credentials['memberships']) > 0)
-        {
+            count($credentials['memberships']) > 0
+        ) {
             $membershipsData = array_values(
                 array_filter($credentials['memberships'])
             );
@@ -431,11 +435,11 @@ class ApplicationController extends Controller
         }
 
         /*$validator = Validator::make($credentials, [
-            'email' => 'required|unique:users|max:255|email',
-            'password' => 'required|min:1|regex:#^[a-z\!\$\#\%0-9\_\-]+$#',
-            'name' => 'required|min:5'
+        'email' => 'required|unique:users|max:255|email',
+        'password' => 'required|min:1|regex:#^[a-z\!\$\#\%0-9\_\-]+$#',
+        'name' => 'required|min:5'
         ], [
-            'regex' => 'Password MUST contains characters, special character and numbers'
+        'regex' => 'Password MUST contains characters, special character and numbers'
         ]);*/
 
 
@@ -449,13 +453,13 @@ class ApplicationController extends Controller
      */
     public function show($id)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
         $application = Application::where('id', '=', $id)->first();
         $photo = storage_path('app/public') . Storage::url($application->student->photo);
-        foreach ($application->student->s2p as $sp) {
+         foreach ($application->student->s2p as $sp) {
             if (isset($sp->mother)) {
                 $mother = $sp->mother;
             }
@@ -473,7 +477,7 @@ class ApplicationController extends Controller
             ->whereHas('course', function ($q) {
                 $q->whereNull('deleted_at');
             })
-        ->get();
+            ->get();
 
         return view('portal/applications/show', [
             'application' => $application,
@@ -492,24 +496,26 @@ class ApplicationController extends Controller
      */
     public function edit($id)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
         $schools = School::get()->toArray();
         $memberships = Membership::get()->toArray();
-        $application = Application::with(['student' => function ($query) {
-            $query->with([
-                'school',
-                'relatives',
-                's2p' => function ($q) {
-                    $q->with(['father', 'mother']);
-                },
-                'memberships' => function ($q) {
-                    $q->with(['membership']);
-                }
-            ]);
-        }])->find($id);
+        $application = Application::with([
+            'student' => function ($query) {
+                $query->with([
+                    'school',
+                    'relatives',
+                    's2p' => function ($q) {
+                            $q->with(['father', 'mother']);
+                        },
+                    'memberships' => function ($q) {
+                            $q->with(['membership']);
+                        }
+                ]);
+            }
+        ])->find($id);
 
         // dd($application->toArray());
 
@@ -544,7 +550,7 @@ class ApplicationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
@@ -696,7 +702,7 @@ class ApplicationController extends Controller
             } else if ($credentials['type'] === 'father') {
                 $parent = ParentModel::where('type', '=', 1);
             }
-            $parent->where(function($query) use($term) {
+            $parent->where(function ($query) use ($term) {
                 $query->where('name', 'like', "%{$term}%");
                 $query->orWhere('phone_1', 'like', "%{$term}%");
                 $query->orWhere('phone_2', 'like', "%{$term}%");
@@ -719,7 +725,7 @@ class ApplicationController extends Controller
 
         if (!$data) {
             $data = [
-                ['name' => 'Not Found, Insert new record?', 'id' => (int)'0']
+                ['name' => 'Not Found, Insert new record?', 'id' => (int) '0']
             ];
         }
         return response()->json($data);
@@ -727,13 +733,13 @@ class ApplicationController extends Controller
 
     public function createClone(Request $request, $appId, $relativeId)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
 
         $app = Application::find($appId);
         $student = Student::with([
-            'relatives' => function ($q) use($relativeId) {
+            'relatives' => function ($q) use ($relativeId) {
                 $q->where('id', '!=', $relativeId);
             }
         ])->find($app->student_id)->toArray();
@@ -757,23 +763,24 @@ class ApplicationController extends Controller
 
     public function storeClone(Request $request)
     {
-        if (in_array(Auth::user()->group_id, [1, 2 , 3]) == false) {
+        if (in_array(Auth::user()->group_id, [1, 2, 3]) == false) {
             return redirect()->route('portal.courses.grid');
         }
-        
+
         $credentials = $request->all();
 
         $relativeId = $credentials['ids']['relativeId'];
 
         $tmp['app'] = Application::find($credentials['ids']['appId']);
         $tmp['student'] = Student::with([
-            'relatives' => function ($q) use($relativeId) {
+            'relatives' => function ($q) use ($relativeId) {
                 $q->where('id', '!=', $relativeId);
             },
             'parents',
             's2p' => function ($q) {
                 $q->with([
-                    'mother','father'
+                    'mother',
+                    'father'
                 ]);
             }
         ])->find($tmp['app']->student_id)->toArray();
@@ -826,8 +833,9 @@ class ApplicationController extends Controller
         $latestStudent = Application::where(
             'customId',
             'like',
-            $firstChar . '%')
-        ->orderBy('id', 'DESC')->first();
+            $firstChar . '%'
+        )
+            ->orderBy('id', 'DESC')->first();
 
         $customId = 0;
         if (isset($latestStudent['customId'])) {
@@ -847,8 +855,8 @@ class ApplicationController extends Controller
         $application->user_id = $userId;
 
         if (
-            count($relatives) > 0)
-        {
+            count($relatives) > 0
+        ) {
 
             foreach ($relatives as $relativeData) {
                 $relative = new Relative;

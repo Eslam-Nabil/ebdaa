@@ -128,6 +128,7 @@ $('.newParticipant').click(function () {
     });
 });
 
+
 function removeTime() {
     $('.removeTime').click(function () {
         var tobeRemoved = $(this).parent().parent();
@@ -228,8 +229,7 @@ $(document).ready(function () {
             }
         });
     });
-
-
+    
     $('.addParticipant').click(function (event) {
         $('#newParticipant .errors').html('');
         var $data = $('#newParticipantForm').serialize();
@@ -321,4 +321,5 @@ $(document).ready(function () {
             }
         });
     });
+    
 });

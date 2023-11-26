@@ -2,6 +2,46 @@
 
 All notable changes to `fractalistic` will be documented in this file
 
+## 2.9.4 - 2022-04-12
+
+## What's Changed
+
+- fixed comp issue by @lukasvy in https://github.com/spatie/fractalistic/pull/58
+
+## New Contributors
+
+- @lukasvy made their first contribution in https://github.com/spatie/fractalistic/pull/58
+
+**Full Changelog**: https://github.com/spatie/fractalistic/compare/2.9.3...2.9.4
+
+## 2.9.3 - 2022-03-20
+
+## What's Changed
+
+- Fix: make jsonSerialize backward compatibile with PHP 7.4 by @albertoarena in https://github.com/spatie/fractalistic/pull/55
+
+## New Contributors
+
+- @albertoarena made their first contribution in https://github.com/spatie/fractalistic/pull/55
+
+**Full Changelog**: https://github.com/spatie/fractalistic/compare/2.9.2...2.9.3
+
+## 2.9.2 - 2022-03-18
+
+## What's Changed
+
+- fix: Php 8.1 support by @AlexJezior in https://github.com/spatie/fractalistic/pull/53
+
+## New Contributors
+
+- @AlexJezior made their first contribution in https://github.com/spatie/fractalistic/pull/53
+
+**Full Changelog**: https://github.com/spatie/fractalistic/compare/2.9.1...2.9.2
+
+## 2.9.1 - 2020-11-12
+
+- add support for PHP 8
+
 ## 2.9.0 - 2020-01-31
 
 - add support for Fractal 0.18
@@ -14,7 +54,7 @@ All notable changes to `fractalistic` will be documented in this file
 
 ## 2.7.2 - 2018-10-08
 
-- set the scope indentifier when creating the scope (see #39)
+- set the scope identifier when creating the scope (see #39)
 
 ## 2.7.1 - 2018-01-15
 

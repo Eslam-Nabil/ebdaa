@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Expenses extends Model
 {
+    protected $table='expenses';
     protected $fillable=['title','isSupply'];
 }

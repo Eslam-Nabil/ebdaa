@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
 
 Route::permanentRedirect('/', 'portal/applications');
 
@@ -19,38 +20,51 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
     // Route::get('/', 'Portal\CommonController@index')->name('portal.home');
     Route::get('users/browse', 'Portal\UsersController@browse')->name('portal.users.browse');
     Route::get('users', 'Portal\UsersController@index');
+    Route::get('user/profile', 'Portal\UsersController@profile')->name('portal.user.profile');
     Route::get('users/token', 'Portal\UsersController@generateToken')->name('portal.users.token');
 
     Route::get(
-        'users/insert', 'Portal\UsersController@insert'
+        'users/insert',
+        'Portal\UsersController@insert'
     )->name('portal.users.insert');
 
     Route::post(
-        'users/create', 'Portal\UsersController@create'
+        'users/create',
+        'Portal\UsersController@create'
     )->name('portal.users.create');
 
     Route::get(
-        'users/browse', 'Portal\UsersController@browse'
+        'users/browse',
+        'Portal\UsersController@browse'
     )->name('portal.users.browse');
 
     Route::get(
-        'users/list', 'Portal\UsersController@list')
-    ->name('portal.users.list');
+        'users/list',
+        'Portal\UsersController@list'
+    )
+        ->name('portal.users.list');
 
     Route::get(
-        'user/{userId}', 'Portal\UsersController@edit')
-    ->name('portal.users.edit');
+        'user/{userId}',
+        'Portal\UsersController@edit'
+    )
+        ->name('portal.users.edit');
 
     Route::get(
-        'user/{userId}/delete', 'Portal\UsersController@delete')
-    ->name('portal.users.delete');
+        'user/{userId}/delete',
+        'Portal\UsersController@delete'
+    )
+        ->name('portal.users.delete');
 
     Route::post(
-        'user/{userId}', 'Portal\UsersController@update')
-    ->name('portal.users.update');
+        'user/{userId}',
+        'Portal\UsersController@update'
+    )
+        ->name('portal.users.update');
 
     Route::resource(
-        'applications', 'Portal\ApplicationController'
+        'applications',
+        'Portal\ApplicationController'
     )->except(['destroy']);
     Route::post(
         'application/lookup',
@@ -171,19 +185,6 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
             ->name('portal.courseTitle.delete');
     });
 
-    Route::group(['prefix' => 'finance'], function () {
-        Route::get('/', 'Portal\FinanceController@index')
-            ->name('portal.finance.index');
-        Route::get('list', 'Portal\FinanceController@list')
-            ->name('portal.finance.list');
-        Route::get('create', 'Portal\FinanceController@create')
-            ->name('portal.finance.create');
-        Route::post('/', 'Portal\FinanceController@store')
-            ->name('portal.finance.store');
-        Route::get('/{id}/delete', 'Portal\FinanceController@delete')
-            ->name('portal.finance.delete');
-    });
-
     Route::group(['prefix' => 'marketing/summary'], function () {
         Route::get('/{startDate?}', 'Portal\MarketingSummaryController@monthly')
             ->name('portal.marketingSummary.monthly');
@@ -192,7 +193,7 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'courses'], function () {
         Route::get('/', 'Portal\CoursesController@index')
             ->name('portal.courses.index');
-        
+
         Route::get('/grid/{startDate?}', 'Portal\CoursesController@grid')
             ->name('portal.courses.grid');
 
@@ -201,22 +202,22 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
 
         Route::get('list', 'Portal\CoursesController@list')
             ->name('portal.courses.list');
-        
+
         Route::get('create', 'Portal\CoursesController@create')
             ->name('portal.courses.create');
-        
+
         Route::post('/', 'Portal\CoursesController@store')
             ->name('portal.courses.store');
-        
+
         Route::get('/{id}', 'Portal\CoursesController@show')
             ->name('portal.courses.show');
-        
+
         Route::get('/{id}/edit', 'Portal\CoursesController@edit')
             ->name('portal.courses.edit');
-        
+
         Route::post('/{id}', 'Portal\CoursesController@update')
             ->name('portal.courses.update');
-        
+
         Route::get('/{id}/delete', 'Portal\CoursesController@delete')
             ->name('portal.courses.delete');
 
@@ -233,8 +234,10 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
     });
 
     Route::get(
-        'common/notifications', 'Portal\CommonController@notifications')
-    ->name('portal.notifications');
+        'common/notifications',
+        'Portal\CommonController@notifications'
+    )
+        ->name('portal.notifications');
 
     Route::get('parents/createtoken', 'Portal\ParentsController@createTokenByStudent')->name('portal.parents.createtoken');
 
@@ -265,16 +268,82 @@ Route::group(['prefix' => 'portal', 'middleware' => ['auth']], function () {
 
         Route::post('addstudent', 'Portal\BusController@AddStudentToBus')
             ->name('portal.bus.addstudent');
-        
+
         Route::post('removestudent', 'Portal\BusController@RemoveStudent')
             ->name('portal.bus.removestudent');
 
         Route::get('journey', 'Portal\BusController@getJourneys')
             ->name('portal.bus.journey');
-        
+
         Route::get('journeys', 'Portal\BusController@Journeys')
             ->name('portal.bus.journeys');
     });
+});
+
+Route::group(['prefix' => 'finance'], function () {
+    Route::get('/', 'Portal\FinanceController@index')
+        ->name('portal.finance.index');
+    Route::get('list', 'Portal\FinanceController@list')
+        ->name('portal.finance.list');
+    Route::get('create', 'Portal\FinanceController@create')
+        ->name('portal.finance.create');
+    Route::post('/', 'Portal\FinanceController@store')
+        ->name('portal.finance.store');
+    Route::get('/{id}/delete', 'Portal\FinanceController@delete')
+        ->name('portal.finance.delete');
+});
+Route::group(['prefix' => 'profile'], function () {
+    Route::get('/', 'Portal\UserController@profile')
+        ->name('portal.profile.index');
+});
+
+Route::group(['prefix' => 'Bond'], function () {
+    Route::get('/', 'Finance\BondController@index')
+        ->name('portal.bond.index');
+    Route::get('/list', 'Finance\BondController@list')
+        ->name('portal.bond.list');
+    Route::get('/accept/{id}', 'Finance\BondController@accept')
+        ->name('portal.bond.accept');
+    Route::post('/store', 'Finance\BondController@store')
+        ->name('portal.bond.store');
+    Route::get('create/{id?}', 'Finance\BondController@create')
+        ->name('portal.bond.create');
+        Route::get('print/{id}', 'Finance\BondController@printBond')
+        ->name('portal.bond.print');
+});
+
+Route::group(['prefix' => 'Expense-request'], function () {
+    Route::get('/', 'Finance\ExpenseRequestController@index')
+        ->name('portal.request.index');
+        Route::get('/list', 'Finance\ExpenseRequestController@list')
+        ->name('portal.request.list');
+        Route::get('/accept/{id}', 'Finance\ExpenseRequestController@accept')
+        ->name('portal.request.accept');
+        Route::post('/store', 'Finance\ExpenseRequestController@store')
+        ->name('portal.request.store');
+        Route::get('create', 'Finance\ExpenseRequestController@create')
+        ->name('portal.request.create');
+        Route::get('/expense-wallet', 'Finance\WalletController@expense_wallet')
+        ->name('portal.request.expense.index');
+        Route::get('/expense-wallet/list', 'Finance\WalletController@expense_wallet_list')
+        ->name('portal.request.expense.list');
+});
+
+Route::group(['prefix' => 'invoice'], function () {
+    Route::get('/', 'Finance\InvoiceController@index')
+        ->name('portal.invoice.index');
+    Route::get('/list', 'Finance\InvoiceController@list')
+        ->name('portal.invoice.list');
+    Route::get('view/{id}', 'Finance\InvoiceController@view')
+        ->name('portal.invoice.view');
+    Route::get('view_json/{id}', 'Finance\InvoiceController@view_json')
+        ->name('portal.invoice.view_json');
+    Route::post('/store', 'Finance\InvoiceController@store')
+        ->name('portal.invoice.store');
+    Route::get('create', 'Finance\InvoiceController@create')
+        ->name('portal.invoice.create');
+    Route::get('print/{id}', 'Finance\InvoiceController@printInvoice')
+        ->name('portal.invoice.print');
 });
 
 Auth::routes();

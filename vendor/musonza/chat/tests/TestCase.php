@@ -11,7 +11,6 @@ use Illuminate\Foundation\Application;
 use Musonza\Chat\ChatServiceProvider;
 use Musonza\Chat\Facades\ChatFacade;
 use Musonza\Chat\Tests\Helpers\Models\User;
-use Orchestra\Database\ConsoleServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -107,7 +106,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            ConsoleServiceProvider::class,
             ChatServiceProvider::class,
         ];
     }
